@@ -6,5 +6,5 @@ int	main(int argc, char **argv)
 		// input validation, check if the files can be opened or not
 
 	}
-	write (2, "error\n", 6);
+	write (2, "Usage: ./pipex infile \"cm1\" \"cm2\" outfile\n", 6);
 }
