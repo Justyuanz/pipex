@@ -7,15 +7,15 @@ bool file_handling(char **argv)
 	fd1 = open(argv[1], O_RDONLY);
 	if (fd1 == -1)
 	{
-		perror("file1");
-		return (false);
+		perror("infile");
+		exit(-1);
 	}
-	fd2 = open(argv[4], O_RDWR);
-	if (fd2 == -1)
-	{
-		perror("file2");
-		close(fd1);
-		return (false);
-	}
+	// fd2 = open(argv[4], O_RDWR);
+	// if (fd2 == -1)
+	// {
+	// 	perror("outfile");
+	// 	close(fd1);
+	// 	exit(-1);
+	// }
 	return (true);
 }
