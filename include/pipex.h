@@ -11,6 +11,8 @@
 typedef struct s_pipex{
 	char	**argv;
 	char	**envp;
+	int		infile_fd;
+	int		outfile_fd;
 	int		pipefd[2];
 	pid_t	pid[2];
 }	t_pipex;
