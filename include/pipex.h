@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <stdio.h> //DELETE ME
 
 typedef struct s_pipex{
@@ -18,5 +19,5 @@ typedef struct s_pipex{
 }	t_pipex;
 
 void free_split(char **arr);
-
+void p_error(int exit_code, char *func);
 #endif
