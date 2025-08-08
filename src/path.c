@@ -1,16 +1,22 @@
 #include "pipex.h"
+
 void redirect_fds(t_pipex *p, int index)
 {
-	// make cmd1 read from infile instead of stdin, and write to pipe instead of stdout
 	if (index == 0)
 	{
-		dup2(p->infile_fd, 0); //HANDLE FAIL
-		dup2(p->pipefd[1], 1); //HANDLE FAIL
+		if (dup2(p->infile_fd, 0) == -1 || dup2(p->pipefd[1], 1) == -1) //HANDLE FAIL
+		{
+			perror("dup2");
+			safe_exit(p, 1, NULL);
+		}
 	}
 	if (index == 1)
 	{
-		dup2(p->pipefd[0], 0);
-		dup2(p->outfile_fd, 1);
+		if (dup2(p->pipefd[0], 0) == -1 || dup2(p->outfile_fd, 1) == -1)
+		{
+			perror("dup2");
+			safe_exit(p, 1, NULL);
+		}
 	}
 }
 int handle_files(int index, t_pipex *p)
@@ -40,6 +46,7 @@ void run_command(t_pipex *p,int index)
 		if (execve(p->full_path, p->split_cmd, p->envp) == -1) //HANDLE ERR
 		{
 			free(p->full_path);
+			p->full_path = NULL;
 			perror("execve");
 			safe_exit(p, 127, NULL);
 		}
@@ -65,6 +72,7 @@ void	find_right_path(t_pipex *p, int index)
 		free(tmp);
 		run_command(p, index); // what if it fails
 		free(p->full_path);
+		p->full_path = NULL;
 		i++;
 	}
 	if (access(p->full_path, X_OK) == -1)

@@ -43,6 +43,7 @@ pid_t subprocess(t_pipex *p, int index)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	p;
+	int status;
 
 	if (argc != 5)
 		write (2, "Usage: ./pipex infile \"cm1\" \"cm2\" outfile\n", 42);
@@ -59,4 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	p.pid[0] = subprocess(&p, 0); //first child process
 	p.pid[1] = subprocess(&p, 1); //second child process
+	waitpid(p.pid[0], &status, 0);
+	waitpid(p.pid[1], &status, 1);
+	safe_exit(&p, status, NULL);
 }

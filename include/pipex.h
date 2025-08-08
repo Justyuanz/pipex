@@ -2,7 +2,7 @@
 # define PIPEX_H
 
 #include "../libft/libft.h"
-#include <stdbool.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
