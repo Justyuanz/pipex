@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 21:07:27 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/08/11 21:13:24 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/08/12 00:48:02 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static void	handle_child(t_pipex *p, int index)
 		if (ft_strncmp(p->envp[i], "PATH=", 5) == 0)
 			break ;
 	}
-	if (!p->envp[i])
-		safe_exit(p, "Path not found\n", 1);
+	 if (!p->envp[i])
+	 	safe_exit(p, "command not found\n", 127);
 	p->split_paths = ft_split(p->envp[i] + 5, ':');
 	if (!p->split_paths)
 		safe_exit(p, "Split fail\n", 1);

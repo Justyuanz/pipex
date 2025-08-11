@@ -1,4 +1,0 @@
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-jinzhang  697209  0.0  0.0      0     0 ?        Z    15:25   0:00 [zypak-sandbox] <defunct>
-jinzhang  697816  0.0  0.0      0     0 ?        Z    15:26   0:00 [zypak-sandbox] <defunct>
-jinzhang  774723  0.0  0.0      0     0 pts/7    Z+   21:49   0:00 [sleep] <defunct>

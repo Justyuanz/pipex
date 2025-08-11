@@ -1,0 +1,15 @@
+Makefile
+README.md
+include
+libft
+obj
+outf
+pipex
+src
+test.txt
+tester_pipex.sh
+zombie_test1
+zombie_test2
+zombie_test3
+zombie_test4
+zombie_test5

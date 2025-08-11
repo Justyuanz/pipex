@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 21:07:18 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/08/11 21:46:01 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/08/12 00:37:46 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	handle_files(int index, t_pipex *p)
 	if (index == 0)
 		fd = open(p->argv[1], O_RDONLY);
 	else
-		fd = open(p->argv[4], O_RDWR | O_CREAT | O_TRUNC);
+		fd = open(p->argv[4], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror("open");
@@ -77,9 +77,7 @@ static void	strjoin_path(t_pipex *p, int i, int index)
 
 	tmp = ft_strjoin(p->split_paths[i], "/");
 	if (!tmp)
-	{
 		safe_exit(p, "Strjoin fails\n", 1);
-	}
 	p->full_path = ft_strjoin(tmp, p->split_cmd[0]);
 	if (!p->full_path)
 	{
@@ -96,24 +94,19 @@ void	find_right_path(t_pipex *p, int index)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	if (access(p->argv[index + 2], X_OK) == 0)
 	{
 		p->full_path = p->argv[index + 2];
 		run_command(p, index);
 	}
-	while (p->split_paths[i])
-	{
-		strjoin_path(p, i, index);
-		i++;
-	}
-	if (errno == EACCES)
-	{
-		perror("access");
+	else if (access(p->argv[index + 2], F_OK) == 0)
 		safe_exit(p, "Permission denied\n", 126);
-	}
-	else
-	{
+	if(!p->argv[index + 2] || (p->argv[index + 2][0] == ' ' &&
+    p->argv[index + 2][1] == '\0'))
 		safe_exit(p, "Command not found\n", 127);
-	}
+	while (p->split_paths[++i])
+		strjoin_path(p, i, index);
+	if (errno == ENOENT)
+		safe_exit(p, "Command not found\n", 127);
 }
