@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 21:07:09 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/08/11 21:07:13 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:00:50 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,20 @@ char	**split_command(t_pipex *p, int index)
 			return (NULL);
 	}
 	return (cmd);
+}
+
+int	handle_files(int index, t_pipex *p)
+{
+	int	fd;
+
+	if (index == 0)
+		fd = open(p->argv[1], O_RDONLY);
+	else
+		fd = open(p->argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror("open");
+		safe_exit(p, NULL, 1);
+	}
+	return (fd);
 }

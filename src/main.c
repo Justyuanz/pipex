@@ -6,7 +6,7 @@
 /*   By: jinzhang <jinzhang@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 21:07:27 by jinzhang          #+#    #+#             */
-/*   Updated: 2025/08/12 00:48:02 by jinzhang         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:00:22 by jinzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,24 @@ static void	handle_child(t_pipex *p, int index)
 	int	i;
 
 	i = -1;
+	if (index == 0)
+		p->infile_fd = handle_files(index, p);
+	else if (index == 1)
+		p->outfile_fd = handle_files(index, p);
+	p->split_cmd = split_command(p, index);
+	if (!p->split_cmd)
+		safe_exit(p, "Split fail\n", 1);
+	if (ft_strchr(p->argv[index + 2], '/') != NULL)
+		find_right_path(p, index);
 	while (p->envp[++i])
 	{
 		if (ft_strncmp(p->envp[i], "PATH=", 5) == 0)
 			break ;
 	}
-	 if (!p->envp[i])
-	 	safe_exit(p, "command not found\n", 127);
+	if (!p->envp[i])
+		safe_exit(p, "command not found\n", 127);
 	p->split_paths = ft_split(p->envp[i] + 5, ':');
 	if (!p->split_paths)
-		safe_exit(p, "Split fail\n", 1);
-	p->split_cmd = split_command(p, index);
-	if (!p->split_cmd)
 		safe_exit(p, "Split fail\n", 1);
 	find_right_path(p, index);
 	free_split(p->split_cmd);
